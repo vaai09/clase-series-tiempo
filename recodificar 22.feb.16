@@ -1,0 +1,37 @@
+### RECODIFICAR Y ETIQUETAR!!!
+
+###3 abrir archivos en dbf....
+require (foreign)
+sdem214 <- read.dbf ("/home/sgr/Escritorio/SDEMT215.dbf") ## ABRIENDO BASE EN DBF
+sdem214 <- data.frame (sdem214)
+str (sdem214)
+attach (sdem214)
+table (SEX)
+table (EDA)
+EDA <- as.numeric (EDA)##cambia numerico
+table (EDA)
+require (car)
+gedad <- recode (EDA, '1:4 = 2 ; 5: 95 = 1') ### redoficando un rango 
+table (gedad)
+#rm (gedad)
+gedad1 <- recode(gedad, "96=1; 97=2") # recodifico generando una variable "gedad"
+table (gedad)
+#revisar pq no funciona
+sdem214$EDA <- factor(sdem214$EDA,
+                    levels = c(1,2,98, 99, 100),
+                    labels = c("red", "blue", "green","m", "g")) 
+table (EDA)
+str(gedad)
+base1 <- data.frame (SEX, gedad)
+View (base1)
+detach (sdem214)
+attach (base1)
+base1$gedad <- factor(base1$gedad ,
+                      levels = c(1,2,98, 99, 100),
+                      labels = c("red", "blue", "green","m", "g")) 
+View (base1)
+require (xlsx)
+write.xlsx(base1, "/home/sergio/Escritorio/prueba.xlsx")
+
+
+### RECODIFIQUEN Y ETIQUETEN IMSSISSSTE, TAMAÑO EMPRESA Y POSICION OCUPA

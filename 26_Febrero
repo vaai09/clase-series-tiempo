@@ -1,0 +1,61 @@
+##Recodificacion de variables
+#0.3  Limpiar el entorno de trabajo
+rm(list = ls())
+
+
+#0.5  Cargar las Bases de datos
+require (foreign)
+SDEMT215<-data.frame(read.dbf("C:/Users/SALA-C14/Desktop/SDEMT215.dbf"))
+
+
+#4.1  Recodificion de variables numericas (rangos)
+#Metodo 1
+
+
+SDEMT215$CLASE2.1[as.numeric(SDEMT215$CLASE2) >= 0 & as.numeric(SDEMT215$CLASE2)<=2] <- 1
+SDEMT215$CLASE2.1[as.numeric(SDEMT215$CLASE2) >= 3 & as.numeric(SDEMT215$CLASE2)<=4] <- 2
+#detach(SDEMT215)
+
+#Método 2
+attach(SDEMT215)
+SDEMT215$CLASE2.2 <- ifelse(as.numeric(CLASE2) >= 1 & as.numeric(CLASE2)<=2,1,
+                            ifelse(as.numeric(CLASE2) >= 3 & as.numeric(CLASE2)<= 3,2, 3))
+detach (SDEMT215)
+
+#Comparacion de los dos metodos
+require(questionr)
+wtd.table(SDEMT215$CLASE2.1)
+wtd.table(SDEMT215$CLASE2.2)
+
+table(SDEMT215$EDA)
+##Ejercicio recodificar variable edad
+##Por los metodos
+rm(list = ls())
+
+##Recodificacion de la variable edad por el metodo uno
+require (foreign)
+
+SDEMT215<-data.frame(read.dbf("C:/Users/SALA-C14/Desktop/SDEMT215.dbf"))
+
+SDEMT215$EDA <- as.numeric(as.character(SDEMT215$EDA)
+                           
+SDEMT215$ED1[as.numeric(SDEMT215$EDA) >=1 & as.numeric(SDEMT215$EDA) <=15] <- 1
+SDEMT215$ED1[as.numeric(SDEMT215$EDA) >=16 &as.numeric(SDEMT215$EDA) <= 30] <- 2
+SDEMT215$ED1[as.numeric(SDEMT215$EDA) >=31 &as.numeric(SDEMT215$EDA) <= 60] <- 3
+SDEMT215$ED1[as.numeric(SDEMT215$EDA) >=61 &as.numeric(SDEMT215$EDA) <= 98] <- 4
+SDEMT215$ED1[as.numeric(SDEMT215$EDA) >=99 &as.numeric(SDEMT215$EDA) <=100] <- 5
+SDEMT215$ED1<- ordered(SDEMT215$ED1, levels = c(1:5), labels= c("NIÑ@S", "JOVENES", "ADULTOS", "ADULTOS MAYORES", "NO ESPECIFICADO"))
+
+
+#Método 2
+attach(SDEMT215)
+SDEMT215$ED2 <- ifelse(as.numeric(EDA)>= 1 & as.numeric(EDA)<=15,1,
+                       ifelse(as.numeric(EDA)>= 16& as.numeric(EDA)<=30,2,
+                              ifelse(as.numeric(EDA)>=31 & as.numeric(EDA)<=60,3,
+                                     ifelse(as.numeric(EDA)>= 61& as.numeric(EDA)<=98,4,5))))
+SDEMT215$ED2 <- ordered(SDEMT215$ED2, levels = c(1:5), labels= c("NIÑ@S", "JOVENES", "ADULTOS", "ADULTOS MAYORES", "NO ESPECIFICADO"))
+
+
+require(questionr)
+wtd.table(SDEMT215$ED1)
+wtd.table(SDEMT215$ED2)

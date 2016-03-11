@@ -1,0 +1,42 @@
+##1.-Simulación de series de tiempo
+##Vamos a simular 1 indicador
+##para la simulacion en principio necesitamos alguna informacion
+##valor máximo, mínimo, el número de datos
+
+##en este ejemplo vamos a proponer la población en máximo
+##que el valor mínimo seran 100, max 120, 15 datos que inicie en 2000
+pob <- sample(100:120, 15, replace = F)
+##la convertimos en serie de tiempo
+pobts <- ts(pob, frequency = 1, start = (2000))
+jpeg(filename = "Simulación ST.jpg")
+layout(1:2)
+plot (pobts, main ="Simulación de Series de Tiempo",xlab="Años", ylab= "Población", col="brown")
+plot(aggregate(pobts), main ="Simulación de Series de Tiempo",xlab="Años", ylab= "Población")
+dev.off()
+
+##bajar base de INEGI la ocupación de las personas
+##función para importar
+ocu <- ts(read.csv(("C:\\Users\\SALA-C18\\Desktop\\ocupa.csv"), header =F), frequency=4, start=2005)
+layout(1:2)
+plot(ocu, main="Tasa de desocupación",xlab="Años", ylab= "Población", col= "pink")
+plot(aggregate(ocu),  main="Tasa de desocupación",xlab="Años", ylab= "Población")
+
+
+##Ejercicio
+##simulada
+deso <- sample(3:8, 44, replace = TRUE)
+desots <- ts(deso, frequency = 4, start = (2005))
+plot(desots,main = "Población Desocupada (Simulada)", xlab="Años", ylab= "Población")
+
+##BASE INEGI
+ds <- ts(read.csv(("C:\\Users\\SALA-C18\\Desktop\\desoc.csv"), header =F), frequency=4, start=2005)
+plot(ds, main="Tasa de desocupación (INEGI)",xlab="Años", ylab= "Población", col= "red")
+plot(aggregate(ds),  main="Tasa de desocupación",xlab="Años", ylab= "Población")
+
+##COMPARACIÓN DE GRÁFICAS
+layout(1:2)
+plot(desots,main = "Población Desocupada (Simulada)", xlab="Años", ylab= "Población")
+plot(ds, main="Tasa de desocupación (INEGI)",xlab="Años", ylab= "Población", col= "red")
+
+##OTRA FORMA DE COMPARAR GRÁFICAS
+plot(cbind(desots,ds), main="Población Desocupada", xlab = "Años", col= "blue")

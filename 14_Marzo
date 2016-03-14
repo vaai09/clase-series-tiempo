@@ -1,0 +1,24 @@
+###clase 14 de marzo...importando matriz del inegi
+indi3 <- ts(read.csv(("C:\\Users\\SALA-C15\\Desktop\\indica.csv"), header = F),frequency=4, start=2005)
+class(indi3)
+##primer entrada renglon, segunda entrada columna, declarando una matriz de serie de tiempo
+desoparcial <- ts(indi3[,1], start =2005, freq =4)
+asala <- ts(indi3[,2],start =2005, freq =4 )
+til1 <- ts (indi3[,3],start =2005, freq =4 )
+##serie de tiempo multiple 
+seriemultiple <- ts.intersect(desoparcial,asala,til1)
+plot(seriemultiple,main="Serie de Tiempo Múltiple",xlab="Años",ylab="Número de personas",col="deeppink")
+seriemultiple
+
+###podemos cortar la serie de tiempo
+##desoparcial <- ts(indi3[,1], start =2005, freq =4)
+##asala <- ts(indi3[,2],start =2005, freq =4)
+#til1 <- ts (indi3[,3],start =2007, freq =4)
+#seriemultiple <- ts.intersect(desoparcial,asala,til1)
+
+###SEPARAR LA SERIE DE TIEMPO DEPENDIENDO DEL ANALISIS
+seriemultiple05.09 <- window(seriemultiple, start= c(2005,1), end=c(2009,4)) 
+seriemultiple10.15 <- window(seriemultiple, start= c(2010,1), end=c(2015,4))
+plot(seriemultiple05.09, main = "Serie de tiempo multiple",xlab="Años",ylab="Número de personas",col="firebrick1")
+plot(seriemultiple10.15, main = "Serie de tiempo multiple",xlab="Años",ylab="Número de personas",col="darkorange1")plot(seriemultiple10.15, main = "Serie de tiempo multiple",xlab="Años",ylab="Número de personas",col="darkorange1")
+start(seriemultiple); end (seriemultiple)plot(seriemultiple05.09, main = "Serie de tiempo multiple",xlab="Años",ylab="Número de personas",col="firebrick1")

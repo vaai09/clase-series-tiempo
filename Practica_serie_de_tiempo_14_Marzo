@@ -1,0 +1,35 @@
+### Ejercicio
+### 1) Importar base
+### 2) Declarar serie de tiempo
+### 3) Graficar las variables separadas
+### 4) Graficar juntas como serie de tiempo
+### 5) Crear serie de tiempo multiple
+### importar la matriz de las acciones de Bimbo
+bimbo <- ts(read.csv(("C:\\Users\\SALA-C16\\Documents\\Bimbo.csv"), 
+                     header = T), frequency = 12, start = 2000)
+bimbo
+class(bimbo)
+open<-ts(bimbo[,1],start=2000, freq=12)
+plot(open, main="Precio de apertura", xlab="Fecha", ylab="Precio",
+       col="blue")
+close<-ts(bimbo[,2],start=2000, freq=12)
+plot(close, main="Precio de cierre", xlab="Fecha", ylab="Precio",
+       col="blue2")
+volumen<-ts(bimbo[,3],start=2000, freq=12)
+plot(volumen, main="Volúmen", xlab="Fecha", ylab="Precio",
+       col="blue3")
+serieb <-ts.intersect(open,close,volumen) ### Serie de tiempo multiple
+plot(serieb, main="Serie multiple", xlab="Fecha", ylab="Precio",
+     col="blue")
+seriemultiple
+
+### Separar la serie de tiempo dependiendo del analisis
+serieb02.08<-window(serieb, start=c(2002,1), end=c(2008,12))
+serieb09.15<-window(serieb, start=c(2009,1), end=c(2015,12))
+layout(1:2)
+plot(serieb02.08, main="Serie multiple", xlab="Años", ylab="Precio",
+     col="red")
+plot(serieb09.15, main="Serie multiple", xlab="Años", ylab="Precio",
+     col="blue")
+
+start(seriemultiple); end(seriemultiple)

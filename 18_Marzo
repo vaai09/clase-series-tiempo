@@ -1,0 +1,10 @@
+###DESCOMPOSICIÓN DE SERIES DE TIEMPO
+tdesoc <- sample(3:8, 60, replace = T)
+stdesoc <- ts(tdesoc,start =2010, freq=12)
+stdesoc.de <- decompose(stdesoc)
+names(stdesoc.de)
+plot(stdesoc.de)
+plot(decompose(stdesoc))
+Trend <- stdesoc.de$trend
+Season <- stdesoc.de$seasonal
+stdesoc.dom <- decompose(stdesoc, type = "mult")

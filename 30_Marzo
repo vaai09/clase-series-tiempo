@@ -1,0 +1,71 @@
+ICA<- ts(read.csv(("C:\\Users\\SALA-D19\\Downloads\\table ICA2.csv"), header= TRUE), frequency=252, start=2000);
+ICA
+##La descomposicion de la serie de tiempo nos permite conocer la estacionalidad, la tendencia y la aleatoriedad de la ST
+##3 para descomponer una serie de tiempo se utiliza la funcion de decompose()
+##para descomponer una st
+
+icaadi<-decompose(ICA)
+
+###para ver graficamente una descomposicion de la ST en R exiten
+## dos formas de graficar la descomposiciom## 1) directo de la serie e tiempo
+plot(decompose(ICA))
+plot(icaadi)
+## en estos casos nos debe dar los mismo resultados
+##ahora como vimos la clase pasad hay dos modelos que podemos descom´poner la st
+##1) modelo aditivo xt= mt+st+zt
+##2) modelo multiplicativo xt=mt*st+zt
+## ahora para descomponer una serie en un modelo aditivo
+## tdesocadi<- decompose(tdesoc) ## aqui es para descomponer la serie de tiempo por defaul nos
+##da el modelo aditivo 
+## ahora para descomponer un st en un modelo multiplicativo
+tdescomult<-decompose(ICA, type="mult")
+## 3 ahora bien comomencionamos anteriormente una st tenemos diveros
+## la descomposicion de st nos genera diversos elemtos como estacionalidad, tendenciua aleatoriedad
+## son elementos que nos interesan
+## fn names()
+names(icaadi) ## con names llamamos los elementos que iene el objeto 
+icaadi$type
+names(tdescomult)
+
+## ahora para signar un objeto para los elementos que nos interesan se realizan de la siguiente manera
+
+tendad<-icaadi$trend ## asignamos la tendencia del modelo aditivo
+icaadi$trend
+
+tendmult<- tdescomult$trend ## asignamos la tendencia del modelo multiplicativo
+estadi<- icaadi$seasonal ## asignamos la estacionalidad del modelo aditivo
+estmult<- tdescomult$seasonal
+
+ts.plot(cbind(tendad, tendad*estadi),lty=1:2,col=c(54,32))
+ ### EJERCICIO
+C<- ts(read.csv(("C:\\Users\\SALA-C27\\Downloads\\cemex.csv"), header= TRUE), frequency=252, start=2000);
+C
+cadi<-decompose(C)
+plot(decompose(C))
+plot(cadi)
+tdescomult<-decompose(C, type="mult")
+names(cadi)
+cadi$type
+names(tdescomult)
+tendad<-cadi$trend
+cadi$trend
+tendmult<- tdescomult$trend
+estadi<- cadi$seasonal
+estmult<- tdescomult$seasonal
+ts.plot(cbind(tendad, tendad*estadi),lty=1:2,col=c(54,32))
+View(cadi$type)
+View(cadi$trend)
+View(cadi$seasonal)
+View(cadi$random)
+
+install.packages("XLConnect")
+require (XLConnect)
+library(XLConnect)
+wb<-loadWorkbook("C:\\Users\\SALA-D19\\Desktop\\tablas.xls",create = TRUE) #Se creea el libro de Excel
+createSheet(wb,name="tendencia") #Se crea la hoja de Excel
+writeWorksheet(wb,cadi$trend,"Tendencia",startRow = 1,startCol =1,header = TRUE )#se asignan los datos
+createSheet(wb,name="estacionalidad")
+writeWorksheet(wb,cadi$seasonal,"Estacionalidad",startRow =1 ,startCol =2,header = TRUE )
+createSheet(wb,name="Aleatoriedad")
+writeWorksheet(wb,cadi$random,"Aleatoriedad",startRow = 1,startCol =3,header = TRUE )
+saveWorkbook(wb)

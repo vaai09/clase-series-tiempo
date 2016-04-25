@@ -1,0 +1,48 @@
+install.packages("fpp")
+require(fpp)
+base <- read.csv("C:\\Users\\SALA-C15\\Documents\\tasas.csv", header = T)
+partc <- ts(base [ , 4],start= 2010, frequency = 4)
+plot(partc)
+Acf(partc)
+
+#metodo1 
+#mean (part, h)
+cmxprot <- mean (partc, 4)
+plot(partc)
+
+##metodo 2
+##Ingenuo
+t_parting <- naive(partc, 4)
+plot(t_parting)
+rwf(t_parting, 3)##a<lternativo
+
+##metodo 3
+##Ingenuo Estacional
+partsnai <- snaive(partc,4)
+partsnai
+plot(partsnai)
+
+##metodo 4
+##de la deriva
+pder <- rwf (partc, 4, drift = TRUE)
+pder
+plot(pder)
+
+
+partc1 <- window(partc, start=2012,end=2014)
+parta1 <- mean(partc1, h=4)
+parta2 <- naive(partc1, h=4)
+parta3 <- snaive(partc1, h=4)
+parta4 <- rwf(partc1, 4, drift = TRUE)
+
+plot(partc, plot.conf=F, xlim=c(2014,2015),
+     main="Proyeccion tasas de desempleo")
+lines(parta1$mean, col=1)
+lines(parta2$mean, col=2)
+lines(parta3$mean, col=3)
+lines(parta4$mean, col=5)
+legend("topleft", lty = 1, col = c(1,2,3,4,5)
+  legend=c("metodo media", "metodo ingenuo","metodo ingenuo estacional","mtd"))
+
+
+

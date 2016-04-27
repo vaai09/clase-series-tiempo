@@ -1,0 +1,26 @@
+##Residuos de los pronosticos
+require(foreign)
+pib <- read.csv("C:\\Users\\SALA-C15\\Desktop\\pib.csv", header= T, dec = ".")
+pibts <- ts(pib [ , 2], start = 1993, frequency = 4)
+View(pibts)
+plot(pibts)
+Acf(pibts)
+##PRONOSTICOS##
+
+pibtspro  <- meanf (pibts, 4)
+plot(pibtspro)
+pibtsnai  <- naive(pibts, 4)
+plot(pibtsnai)
+pibtssnai <- snaive(pibts, 4)
+plot(pibtssnai)
+pibtsder  <- rwf(pibts,4, drift = TRUE)
+plot(pibtsder)
+
+evalmed  <- accuracy(pibtspro)
+evaling  <- accuracy(pibtsnai)
+evalsnai <- accuracy(pibtssnai)
+evalder  <- accuracy(pibtsder)
+evalmed
+evaling
+evalsnai
+evalder

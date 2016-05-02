@@ -1,0 +1,57 @@
+
+pb <- read.csv("C:\\Users\\SALA-C15\\Desktop\\PIB_MEXICO.csv")
+pb
+pbst <- ts(pb [,2], start= 1960, end = 2015)
+plot(pbst)
+
+
+plot(pbst, main="Tasa de crecimiento del PIB en México 1960-2015",
+     ylab= "Tasa de Crecimiento", xlab="Años", col=3)
+res2 <- residuals(snaive(pbst))
+res3 <- residuals(rwf(pbst, drift = T))
+View(res1)
+res3
+##ingenuo estacional
+plot(res2, main="Residuales de Ingenuo Estacional", ###para saber si la varianza es cte.
+     ylab= "Residuales", xlab="Años")
+Acf(res2, main="ACF de residuales") ##para saber si hay o no correlacion entre los residuos.si el 5% de las lineas se salen de nuestros rangos podemos si hay correlacion
+hist(res2, main="Histograma residuales")##para conocer si los residuos se distribuyen normalmente.
+
+##deriva
+plot(res3, main="Residuales de deriva",
+     ylab="residuales", xlab="Años")
+Acf(res3, main="ACF de residuales")
+hist(res3, nclass="FD", main="Histograma residuales")
+
+##metodo de la media
+res1 <- residuals(meanf(pbst,1))
+res1
+plot(res1, main="Residuales de media",
+     ylab="residuales", xlab="Años")
+Acf(res1, main="ACF de residuales")
+hist(res1, nclass="FD", main="Histograma residuales")
+
+##ingenuo 
+res4 <- residuals(naive(pbst))
+res4
+plot(res4, main="Residuales de media",
+     ylab="residuales", xlab="Años")
+Acf(res4, main="ACF de residuales")
+hist(res4, nclass="FD", main="Histograma residuales")
+
+Box.test(res1, lag=10, fitdf = 0)###box-pierce
+Box.test(res2, lag=10, fitdf = 0)
+Box.test(res3, lag=10, fitdf = 0)
+Box.test(res4, lag=10, fitdf = 0)
+Box.test(res1, lag=10, fitdf = 0, type="Lj") ##box ljun
+Box.test(res2, lag=10, fitdf = 0, type="Lj") ##box ljun
+Box.test(res3, lag=10, fitdf = 0, type="Lj") ##box ljun
+Box.test(res4, lag=10, fitdf = 0, type="Lj") ##box ljun
+
+
+####hipotesis nula:las autocorrelacionnes de hasta un desfase
+##que son iguales a cero(aleatorios e independientes)
+##hipotesis alternativa: las autocorrelaciones son diferentes
+##significativamente de cero (no hay aleatoriedad ni independencia)
+##Si el p-value>0.05 se acepta la hipotesis nula de aleatoriedad e
+##independencia

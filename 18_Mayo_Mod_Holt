@@ -1,0 +1,116 @@
+##########SERIE1##########
+cem    <- read.csv("C:\\Users\\Lidia\\Downloads\\cem.csv")
+cemts  <- ts(cem [,5] ,start= 2000, frequency = 12)
+cemts
+
+ModHl  <- holt(cemts, initial = "simple", h = 4)
+ModHe  <- holt(cemts, initial = "simple",exponential = T, h = 4)
+ModAa  <- holt(cemts, damped = T)
+ModMa  <- holt(cemts, exponential = T, damped = T)
+ModHwa <- hw(cemts, seasonal = "additive")
+ModHwm <-hw(cemts, seasonal = "multiplicative")
+
+plot(ModHl, plot.conf=FALSE, ylab="Precio", xlab="Año", main="", fcol="blue", type="o")
+plot(ModHe, plot.conf=FALSE, ylab="Precio", xlab="Año", main="", fcol="blue", type="o")
+plot(ModAa, plot.conf=FALSE, ylab="Precio", xlab="Año", main="", fcol="blue", type="o")
+plot(ModMa , plot.conf=FALSE, ylab="Precio", xlab="Año", main="", fcol="blue", type="o")
+plot(ModHwa, plot.conf=FALSE, ylab="Precio", xlab="Año", main="", fcol="blue", type="o")
+plot(ModHwm, plot.conf=FALSE, ylab="Precio", xlab="Año", main="", fcol="blue", type="o")
+
+
+lines(fitted(ModHl), col="2", type="o")
+lines(fitted(ModHe), col="4", type="o")
+lines(fitted(ModAa), col="6", type="o")
+lines(fitted(ModMa), col="8", type="o")
+lines(fitted(ModHwa), col="10", type="o")
+lines(fitted(ModHwm), col="12", type="o")
+
+
+lines(ModHl$mean, col="2", type="o")
+lines(ModHe$mean, col="4", type="o")
+lines(ModAa$mean, col="6", type="o")
+lines(ModMa$mean, col="8", type="o")
+lines(ModHwa$mean, col="10", type="o")
+lines(ModHwm$mean, col="12", type="o")
+legend("topleft",lty=1, col=c(1, "2","4","6","8","10"), 
+       c("data", "Modelo Holt Lineal", "Modelo Holt Exponencial",
+         "Modelo Aditiva Amortiguado","Modelo Multiplicativa Amortiguado",
+         "Modelo Holt Winter Aditivo","Modelo Holt Winter Multiplicativo"),pch=1)
+
+
+#Media 
+cemm <- meanf(cemts, 4)
+#Ingenuo
+cemin <- naive(cemts, 4)
+#Ingenuo Estacional
+cemie <- snaive(cemts, 4)
+#Deriva
+cemde <- rwf(cemts, 4, drift = T)
+
+mm  <- accuracy(cemm)
+mi  <- accuracy(cemin)
+mie <- accuracy(cemie)
+md  <- accuracy(cemde)
+mm
+mi
+mie
+md
+
+
+##########SERIE2##########
+tm <- read.csv("C:\\Users\\Lidia\\Downloads\\Mor.csv")
+tmts <- ts(tm [,2] ,start= 1990, frequency = 1)
+
+
+
+MH  <- holt(tmts, initial = "simple", h = 4)
+MHe <- holt(tmts, initial = "simple",exponential = T, h = 4)
+MA  <- holt(tmts, damped = T)
+MM  <- holt(tmts, exponential = T, damped = T)
+MHw <- hw(tmts, seasonal = "additive")
+Mm  <- hw(tmts, seasonal = "multiplicative")
+
+plot(MH, plot.conf=FALSE, ylab="Mortalidad", xlab="Año", main="", fcol="3", type="o")
+plot(MHe, plot.conf=FALSE, ylab="Mortalidad", xlab="Año", main="", fcol="6", type="o")
+plot(MA, plot.conf=FALSE, ylab="Mortalidad", xlab="Año", main="", fcol="9", type="o")
+plot(MM , plot.conf=FALSE, ylab="Mortalidad", xlab="Año", main="", fcol="12", type="o")
+plot(MHw, plot.conf=FALSE, ylab="Mortalidad", xlab="Año", main="", fcol="15", type="o")
+plot(Mm, plot.conf=FALSE, ylab="Mortalidad", xlab="Año", main="", fcol="18", type="o")
+
+
+lines(fitted(MH), col="3", type="o")
+lines(fitted(MHe), col="6", type="o")
+lines(fitted(MA), col="9", type="o")
+lines(fitted(MM), col="12", type="o")
+lines(fitted(MHw), col="15", type="o")
+lines(fitted(Mm), col="18", type="o")
+
+lines(MH$mean, col="3", type="o")
+lines(MHe$mean, col="6", type="o")
+lines(MA$mean, col="9", type="o")
+lines(MM$mean, col="12", type="o")
+lines(MHw$mean, col="15", type="o")
+lines(Mm$mean, col="18", type="o")
+legend("topleft",lty=1, col=c(3,6,9,12,15,18), 
+       c("data", "Modelo Holt Lineal", "Modelo Holt Exponencial",
+         "Modelo Aditiva Amortiguado","Modelo Multiplicativa Amortiguado",
+         "Modelo Holt Winter Aditivo","Modelo Holt Winter Multiplicativo"),pch=1)
+
+#Media 
+mst <- meanf(tmts, 1)
+#Ingenuo
+ist <- naive(tmts, 1)
+#Ingenuo Estacional
+isst <- snaive(tmts, 1)
+#Deriva
+dst <- rwf(tmts, 1, drift = T)
+
+mm2  <- accuracy(mst)
+mi2  <- accuracy(ist)
+mie2 <- accuracy(isst)
+md2  <- accuracy(dst)
+
+mm2
+mi2
+mie2
+md2

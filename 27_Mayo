@@ -1,0 +1,59 @@
+##ejercicio
+##1.-elijan 1 seride tiempo
+##2.- apliquen funcion auto.arima (3,1,0). 
+##3.apliquen funcion Arima (p,q,d) con dos modelos diferentes al que genere 
+##la funcion auto.arima.
+##3.1.- generen los pronosticos de los tres modelos.
+##4.-generar 1 grafica con los valores reales y los valores ajustados de los 3 modelos.
+##5.- generar grafica con los valores reales y los valores ajustados y pronosticandos en los
+##3 modelos numero de pronosticos-->4
+##fif ajuste
+##mean pronosticos
+require (fpp)
+tasas <- read.csv ("C:\\Users\\SALA-C14\\Downloads\\tasaS.CSV")
+tdeso <- ts(tasas [,4], start  = 2005, frequency = 4)
+
+
+modtd <- auto.arima(tdeso, seasonal=F)
+modtd
+protd<- forecast (modtd, h=4)
+fitted (protd)
+plot(protd, plot.conf=F, ylab="Tasas",
+     xlab="año", main="", fcol="brown", type="o")
+lines(fitted(protd), col="red", type="o")
+lines(protd$mean, col="violet", type="o")
+
+tds <- Arima(tdeso, order = c(3,1,0))
+tds
+protd1<- forecast (tds, h=4)
+fitted (protd1)
+lines(fitted(protd1), col="blue", type="o")
+lines(protd1$mean, col="brown", type="o")
+
+
+tds1 <- Arima(tdeso, order = c(2,1,0))
+tds1
+protd2<- forecast (tds1, h=4)
+fitted (protd2)
+lines(fitted(protd2), col="green", type="o")
+lines(protd2$mean, col="orange", type="o")
+
+tds2 <- Arima(tdeso, order = c(1,0,1))
+tds2
+protd3<- forecast (tds2, h=4)
+fitted (protd3)
+lines(fitted(protd3), col="yellow", type="o")
+lines(protd3$mean, col="violet", type="o")
+
+tsd3 <- Arima(tdeso, order = c(0,1,2))
+tsd3
+protd4<- forecast (tds3, h=4)
+fitted (protd3)
+lines(fitted(protd3), col="orange3", type="o")
+lines(protd3$mean, col="violet", type="o")
+
+
+legend("topleft",lty=1, col=c(1,"red","blue","green","yellow","orange3"), 
+       c("data", expression("Modelo 1"), expression("Modelo 2"),
+         expression("Modelo 3"), expression("Modelo 4"), 
+         expression("Modelo 5")),pch=10)
